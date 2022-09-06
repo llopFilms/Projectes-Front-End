@@ -9,16 +9,19 @@ const operand_btns = document.querySelectorAll("[data-type=operand]");
 let is_operator = false;
 operand_btns.forEach((btn) => {
   btn.addEventListener("click", (element) => {
-    if (output.value == "0") output.value = element.target.value;
-    else if (output.value.includes("."))
-      output.value = `${output.value}${element.target.value.replace(".", "")}`;
-    else if (is_operator) {
+    if (is_operator) {
       output.value = element.target.value;
       is_operator = false;
-    } else output.value = `${output.value}${element.target.value}`;
+    } else if (output.value == "0" && element.target.value == ".")
+      output.value = "0.";
+    else if (output.value.includes("."))
+      output.value = `${output.value}${element.target.value.replace(".", "")}`;
+    else if (output.value == "0") output.value = element.target.value;
+    else output.value = `${output.value}${element.target.value}`;
     c_btn();
 
     console.log(output.value);
+    console.log (typeof output.value);
     console.log(equation);
     console.log(is_operator);
   });
@@ -44,6 +47,7 @@ operator_btns.forEach((btn) => {
       case "=":
         equation.push(output.value);
         output.value = eval(equation.join(""));
+        console.log(equation);
         equation = [];
         is_equal = true;
         break;
@@ -62,10 +66,10 @@ operator_btns.forEach((btn) => {
     }
     c_btn();
 
-    console.log(equation);
     console.log(output.value);
     console.log(is_operator);
     console.log(is_equal);
+    console.log(equation);
   });
 });
 
@@ -79,18 +83,24 @@ const c_btn = () => {
 
 clear_btn.addEventListener("click", () => {
   if (
-    !is_operator &&
-    !is_equal &&
-    !(
-      (output.value.length == 1 && output.value != 0) ||
-      (output.value.length == 1 && output.value == "-")
-    )
-  )
-    output.value = output.value.substring(0, output.value.length - 1);
-  else output.value = 0;
+    is_operator ||
+    is_equal ||
+    output.value == "" ||
+    output.value.length == 1 ||
+    (output.value.length == 2 && output.value.includes("-"))
+  ) {
+    output.value = 0;
+    equation = [];
+  } else output.value = output.value.substring(0, output.value.length - 1);
   c_btn();
   remove_active();
   is_equal = false;
 
-  console.log(output.value.length, output.value);
+  console.log(
+    output.value.length,
+    output.value,
+    is_operator,
+    is_equal,
+    equation,
+  );
 });
