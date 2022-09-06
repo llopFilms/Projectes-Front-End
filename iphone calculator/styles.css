@@ -12,7 +12,7 @@ html {
 
 .container {
   height: 100vh;
-  background-color: #333333;
+  background: linear-gradient(to bottom, #ef8e38, #108dc7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,11 +30,11 @@ input[type="text"] {
   width: 100%;
   color: #d2d2d2;
   border: 0;
-  font-size: 3.5rem;
+  font-size: 4rem;
 }
 
 #main {
-  border: .2rem solid #ededed;
+  border: .3rem solid #ededed;
   border-radius: 5rem;
   width: 28rem;
   background-color: #000;
@@ -44,6 +44,8 @@ input[type="text"] {
 .calc_header {
   margin-top: 9rem;
   padding: 1.2rem;
+  background-color: rgb(56, 56, 56);
+  border-radius: 1rem;
 }
 
 .btn-group {

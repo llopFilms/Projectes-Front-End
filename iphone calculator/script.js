@@ -1,35 +1,40 @@
-
 let equation = [];
 
 const form = document.getElementById("calc-form");
 form.addEventListener("submit", (element) => element.preventDefault());
-
 const output = document.getElementById("output");
+output.value = 0;
 const operand_btns = document.querySelectorAll("[data-type=operand]");
 
 let is_operator = false;
 operand_btns.forEach((btn) => {
   btn.addEventListener("click", (element) => {
     if (output.value == "0") output.value = element.target.value;
-    else if (output.value.includes(".")) output.value = `${output.value}${element.target.value.replace(".", "")}`;
+    else if (output.value.includes("."))
+      output.value = `${output.value}${element.target.value.replace(".", "")}`;
     else if (is_operator) {
       output.value = element.target.value;
       is_operator = false;
-    }
-    else output.value = `${output.value}${element.target.value}`;
+    } else output.value = `${output.value}${element.target.value}`;
+    c_btn();
+
     console.log(output.value);
+    console.log(equation);
+    console.log(is_operator);
   });
 });
 
 const operator_btns = document.querySelectorAll("[data-type=operator]");
-const remove_active = () => operator_btns.forEach((btn) => btn.classList.remove("active"));
+const remove_active = () =>
+  operator_btns.forEach((btn) => btn.classList.remove("active"));
 
+let is_equal = false;
 operator_btns.forEach((btn) => {
   btn.addEventListener("click", (element) => {
     remove_active();
     element.currentTarget.classList.add("active");
 
-    switch(element.target.value) {
+    switch (element.target.value) {
       case "%":
         output.value = parseFloat(output.value) / 100;
         break;
@@ -40,6 +45,8 @@ operator_btns.forEach((btn) => {
         equation.push(output.value);
         output.value = eval(equation.join(""));
         equation = [];
+        is_equal = true;
+        break;
       default:
         let last_item = equation[equation.length - 1];
         const operators = ["/", "*", "+", "-"];
@@ -53,6 +60,37 @@ operator_btns.forEach((btn) => {
         is_operator = true;
         break;
     }
+    c_btn();
+
+    console.log(equation);
+    console.log(output.value);
+    console.log(is_operator);
+    console.log(is_equal);
   });
 });
 
+const clear_btn = document.querySelector("[data-type=clear]");
+
+const c_btn = () => {
+  if (output.value == 0 || output.value == "-" || is_operator || is_equal)
+    clear_btn.innerText = "AC";
+  else clear_btn.innerText = "C";
+};
+
+clear_btn.addEventListener("click", () => {
+  if (
+    !is_operator &&
+    !is_equal &&
+    !(
+      (output.value.length == 1 && output.value != 0) ||
+      (output.value.length == 1 && output.value == "-")
+    )
+  )
+    output.value = output.value.substring(0, output.value.length - 1);
+  else output.value = 0;
+  c_btn();
+  remove_active();
+  is_equal = false;
+
+  console.log(output.value.length, output.value);
+});
