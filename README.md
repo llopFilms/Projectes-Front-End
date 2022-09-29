@@ -1,1 +1,3 @@
-# Projectes-Front-End
+# Projectes-Front-End autoaprenentatge
+
+Exercicis de promgramaci
