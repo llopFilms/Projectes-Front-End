@@ -1,7 +1,23 @@
 const KEY = "7946e9c6215f0e58c31e66436eb5f84e";
 let pagina = 1;
-const btnAnterior = document.getElementById("anterior");
-const btnSeguent = document.getElementById("seguent");
+let llista = "";
+let ultimaPeli;
+
+let observador = new IntersectionObserver(
+  (entrades, observador) => {
+    console.log(entrades);
+    entrades.forEach((entrada) => {
+      if (entrada.isIntersecting) {
+        pagina++;
+        carregarPelis(KEY, pagina);
+      }
+    });
+  },
+  {
+    rootMargin: "0px 0px 200px 0px",
+    threshold: 1,
+  }
+);
 
 const carregarPelis = async (KEY, pagina) => {
   try {
@@ -10,7 +26,6 @@ const carregarPelis = async (KEY, pagina) => {
     )
       .then((response) => response.json())
       .then((response) => {
-        let llista = "";
         const pelis = response.results;
         console.log(pelis);
         pelis.forEach(
@@ -22,23 +37,38 @@ const carregarPelis = async (KEY, pagina) => {
               </div>`)
         );
         document.getElementById("contenidor").innerHTML = llista;
+
+        if (pagina < 1000) {
+          if (ultimaPeli) observador.unobserve(ultimaPeli);
+          ultimaPeli = document.querySelectorAll(".contenidor .pelicula")[
+            document.querySelectorAll(".contenidor .pelicula").length - 1];
+          console.log(ultimaPeli);
+          observador.observe(ultimaPeli);
+        }
       });
   } catch (err) {
     console.log(err.message);
+  } finally {
+    console.log("Promesa acabada");
   }
 };
 carregarPelis(KEY, pagina);
 
+/* 
+const btnAnterior = document.getElementById("anterior");
+const btnSeguent = document.getElementById("seguent");
+
 btnAnterior.addEventListener("click", () => {
-  pagina == 1 ? (pagina = 1) : pagina--;
+  if (pagina > 1) pagina--;
   carregarPelis(KEY, pagina);
   console.log(pagina);
   document.getElementById("numero").innerHTML = pagina;
 });
 
 btnSeguent.addEventListener("click", () => {
-  pagina++;
+  if (pagina < 1000) pagina++;
   carregarPelis(KEY, pagina);
   console.log(pagina);
   document.getElementById("numero").innerHTML = pagina;
 });
+ */
