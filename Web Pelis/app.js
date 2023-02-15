@@ -18,39 +18,41 @@ const carregarPelis = async (URL, TOKEN, pagina) => {
         Authorization: TOKEN,
       },
     })
-      /* axios({
+    /* axios({
         method: "get",
         url: URL,
         params: { api_key: KEY, page: pagina }
       }) */
-        /*axios.get(`${URL}?api_key=${KEY}&page=${pagina}`) */
-        /*await fetch(
+    /* axios.get(`${URL}?api_key=${KEY}&page=${pagina}`); */
+    /* axios.get("https://api.themoviedb.org/3/movie/popular?api_key=7946e9c6215f0e58c31e66436eb5f84e&page=3") */
+
+      /*await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&page=${pagina}`
       )
       .then((response) => response.json()) */
-        .then((response) => {
-          //const pelis = response.results;
-          const pelis = response.data.results;
-          console.log(pelis);
-          pelis.forEach(
-            (peli) =>
-              (llista += `
+      .then((response) => {
+        //const pelis = response.results;
+        const pelis = response.data.results;
+        console.log(pelis);
+        pelis.forEach(
+          (peli) =>
+            (llista += `
               <div class="pelicula">
                 <img class="poster" src="https://image.tmdb.org/t/p/w500/${peli.poster_path}"/>
                 <p class="titol">${peli.title}</p>
               </div>`)
-          );
-          document.getElementById("contenidor").innerHTML = llista;
+        );
+        document.getElementById("contenidor").innerHTML = llista;
 
-          if (pagina < 1000) {
-            if (ultimaPeli) observador.unobserve(ultimaPeli);
-            ultimaPeli = document.querySelectorAll(".contenidor .pelicula")[
-              document.querySelectorAll(".contenidor .pelicula").length - 1
-            ];
-            console.log(ultimaPeli.innerText);
-            observador.observe(ultimaPeli);
-          }
-        });
+        if (pagina < 1000) {
+          if (ultimaPeli) observador.unobserve(ultimaPeli);
+          ultimaPeli = document.querySelectorAll(".contenidor .pelicula")[
+            document.querySelectorAll(".contenidor .pelicula").length - 1
+          ];
+          console.log(ultimaPeli.innerText);
+          observador.observe(ultimaPeli);
+        }
+      });
   } catch (err) {
     console.log(err.message);
   } finally {
