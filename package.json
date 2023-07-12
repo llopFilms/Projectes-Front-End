@@ -1,0 +1,12 @@
+{
+  "name": "projectes-fornt_end-vanillasjs",
+  "version": "1.0.0",
+  "description": "Exercicis de Programació en Js ES6 + Maquetació CSS (Flex, Grid, Bootstrap/Bootswitch)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
